@@ -1,0 +1,9 @@
+{
+  "name": "reacting",
+  "version": "1.0.0",
+  "description": "frontend",
+  "main": "index.js",
+  "author": "Leandro Lasnor",
+  "license": "MIT",
+  "private": true
+}
