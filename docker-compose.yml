@@ -1,0 +1,60 @@
+# docker-compose.yml
+version: '2.22'
+services:
+  sidekiq:
+    image: leandrolasnor/ruby:jedis
+    container_name: jedis.sidekiq
+    command: sh -c "bundle exec sidekiq"
+    depends_on:
+      - redis
+
+  api:
+    image: leandrolasnor/ruby:jedis
+    container_name: jedis.api
+    stdin_open: true
+    tty: true
+    command: sh
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:16.0
+    container_name: jedis.postgresql
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: impulso
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    container_name: jedis.redis
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "6379:6379"
+
+  react:
+    image: leandrolasnor/ruby:jedis
+    container_name: jedis.react
+    stdin_open: true
+    tty: true
+    command: sh
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+      - sidekiq
+
+  meilisearch:
+      image: getmeili/meilisearch:latest
+      container_name: jedis.meilisearch
+      ports:
+        - "7700:7700"
+      environment:
+        MEILI_MASTER_KEY: key
+        MEILI_NO_ANALYTICS: true
