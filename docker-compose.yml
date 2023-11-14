@@ -26,7 +26,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: user
-      POSTGRES_DB: impulso
+      POSTGRES_DB: jedis
     ports:
       - "5432:5432"
 
