@@ -1,0 +1,86 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/v1/people":
+    post:
+      summary: create person
+      tags:
+      - People
+      parameters: []
+      responses:
+        '422':
+          description: invalid params
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                taxpayer_number:
+                  type: integer
+                cns:
+                  type: string
+                birthdate:
+                  type: string
+                  required: true
+                email:
+                  type: string
+                  required: true
+                contacts_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      number:
+                        type: string
+                  required:
+                  - number
+                addresses_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                      number:
+                        type: string
+                      district:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      addon:
+                        type: string
+                      ibge:
+                        type: string
+                  required:
+                  - address
+                  - number
+                  - district
+                  - city
+                  - state
+                  - zip
+                  - addon
+                  - ibge
+              required:
+              - name
+              - taxpayer_number
+              - cns
+              - birthdate
+              - email
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
