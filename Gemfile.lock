@@ -171,6 +171,9 @@ GEM
     foreman (0.87.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -203,9 +206,14 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    meilisearch (0.25.1)
+      httparty (>= 0.17.1, < 0.22.0)
+    meilisearch-rails (0.10.1)
+      meilisearch (~> 0.25.0)
     mini_mime (1.1.5)
     minitest (5.20.0)
     msgpack (1.7.2)
+    multi_xml (0.6.0)
     mutex_m (0.2.0)
     net-imap (0.4.5)
       date
@@ -395,6 +403,7 @@ DEPENDENCIES
   figaro
   foreman
   kaminari
+  meilisearch-rails
   pg
   puma (>= 5.0)
   rack-cors
