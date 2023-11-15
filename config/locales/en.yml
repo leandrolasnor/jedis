@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  not_found: "Record Not Found"
+  dry_validation:
+    errors:
+      taxpayer_number_invalid: "Taxpayer number is not valid."
+      age_must_be_between_18_80: "Age must be between 18 and 80 years old"
+      cns_invalid: "CNS Code is not valid"
+      invalid_format: "Invalid Format"
