@@ -12,5 +12,9 @@
 
 development:
   REDIS_URL: 'redis://redis:6379'
+  MEILISEARCH_ACCESS_KEY: 'vU8QQBiMCakitq-XSJDOIaf9gLmpvedxAW1k79Nx0Mg'
+  MEILISEARCH_URL: 'http://meilisearch:7700/'
 test:
   REDIS_URL: 'redis://redis:6379'
+  MEILISEARCH_ACCESS_KEY: 'vU8QQBiMCakitq-XSJDOIaf9gLmpvedxAW1k79Nx0Mg'
+  MEILISEARCH_URL: 'http://meilisearch:7700/'
