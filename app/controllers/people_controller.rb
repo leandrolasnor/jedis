@@ -12,7 +12,7 @@ class PeopleController < BaseController
   end
 
   def update
-    status, content, serializer = Http::UpdateProponent::Service.(update_params)
+    status, content, serializer = Http::UpdatePerson::Service.(update_params)
     render json: content, status: status, serializer: serializer
   end
 
@@ -52,9 +52,7 @@ class PeopleController < BaseController
   def update_params
     params.permit(
       :id,
-      :name,
       :status,
-      :birthdate,
       :email,
       addresses_attributes: [
         :id,
