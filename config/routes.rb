@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   scope '/v1' do
-    resources :people, only: [:create, :update]
+    resources :people, only: [:create, :update, :show]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

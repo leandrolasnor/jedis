@@ -2,7 +2,7 @@
 
 class PeopleController < BaseController
   def show
-    status, content, serializer = Http::ShowProponent::Service.(show_params)
+    status, content, serializer = Http::ShowPerson::Service.(show_params)
     render json: content, status: status, serializer: serializer
   end
 

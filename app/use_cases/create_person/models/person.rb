@@ -22,10 +22,10 @@ class CreatePerson::Models::Person < ApplicationRecord
       addresses.first.attributes.except("created_at", "updated_at", "person_id")
     end
     attribute :contact do
-      contacts.first&.number
+      contacts.first.attributes.except("created_at", "updated_at", "person_id")
     end
-    displayed_attributes [:id, :name, :taxpayer_number, :cns, :email, :birthdate, :status, :address, :contact]
-    searchable_attributes [:name, :taxpayer_number, :cns, :address, :contact]
+    displayed_attributes [:id, :name, :taxpayer_number, :cns, :email, :birthdate, :status]
+    searchable_attributes [:name, :taxpayer_number, :cns, :email, :birthdate, :address, :contact]
     sortable_attributes [:name, :birthdate]
   end
 end
