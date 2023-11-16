@@ -2,6 +2,7 @@
 
 class UpdatePerson::Models::Person < ApplicationRecord
   include Enums::Person::Status
+  include Indexes::Person::Meilisearch
 
   has_many :contacts
   has_many :addresses
