@@ -80,6 +80,22 @@ paths:
               - birthdate
               - email
   "/v1/people/{id}":
+    get:
+      summary: show person
+      tags:
+      - People
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '404':
+          description: not found
+        '200':
+          description: successful
     put:
       summary: update person
       tags:

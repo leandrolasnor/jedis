@@ -140,66 +140,68 @@ RSpec.describe PeopleController do
   end
 
   path '/v1/people/{id}' do
-    # get('show person') do
-    #   tags 'People'
-    #   parameter name: :id, in: :path, type: :string, description: 'id'
-    #   response(404, 'not found') do
-    #     let(:id) { 0 }
-    #     let(:expected_body) { { error: I18n.t(:not_found) } }
+    get('show person') do
+      tags 'People'
+      parameter name: :id, in: :path, type: :string, description: 'id'
+      response(404, 'not found') do
+        let(:id) { 0 }
+        let(:expected_body) { { error: I18n.t(:not_found) } }
 
-    #     run_test! do |response|
-    #       expect(response).to have_http_status(:not_found)
-    #       expect(parsed_body).to eq(expected_body)
-    #     end
-    #   end
+        run_test! do |response|
+          expect(response).to have_http_status(:not_found)
+          expect(parsed_body).to eq(expected_body)
+        end
+      end
 
-    #   response(200, 'successful') do
-    #     let(:id) { proponent.id }
-    #     let(:proponent) do
-    #       p = create(:proponent)
-    #       contact.proponent_id = p.id
-    #       address.proponent_id = p.id
-    #       contact.save
-    #       address.save
-    #       p
-    #     end
-    #     let(:contact) { build(:contact) }
-    #     let(:address) { build(:address) }
+      response(200, 'successful') do
+        let(:id) { person.id }
+        let(:contact) { build(:contact) }
+        let(:address) { build(:address) }
+        let(:person) do
+          p = create(:person)
+          contact.person_id = p.id
+          address.person_id = p.id
+          contact.save
+          address.save
+          p
+        end
 
-    #     let(:expected_body) do
-    #       {
-    #         id: id,
-    #         name: proponent.name,
-    #         taxpayer_number: proponent.taxpayer_number,
-    #         birthdate: proponent.birthdate.to_date.to_s,
-    #         amount: proponent.amount.to_s,
-    #         discount_amount: proponent.discount_amount.to_s,
-    #         contacts: [
-    #           {
-    #             id: be_a(Integer),
-    #             number: contact.number
-    #           }
-    #         ],
-    #         addresses: [
-    #           {
-    #             id: be_a(Integer),
-    #             address: address.address,
-    #             number: address.number,
-    #             district: address.district,
-    #             city: address.city,
-    #             state: address.state,
-    #             zip: address.zip
-    #           }
-    #         ]
-    #       }
-    #     end
+        let(:expected_body) do
+          {
+            id: id,
+            name: person.name,
+            taxpayer_number: person.taxpayer_number,
+            birthdate: person.birthdate.to_date.to_s,
+            email: person.email,
+            cns: person.cns,
+            contacts: [
+              {
+                id: be_a(Integer),
+                number: contact.number
+              }
+            ],
+            addresses: [
+              {
+                id: be_a(Integer),
+                address: address.address,
+                number: address.number,
+                district: address.district,
+                city: address.city,
+                state: address.state,
+                zip: address.zip,
+                addon: address.addon,
+                ibge: address.ibge
+              }
+            ]
+          }
+        end
 
-    #     run_test! do |response|
-    #       expect(response).to have_http_status(:ok)
-    #       expect(parsed_body).to match(expected_body)
-    #     end
-    #   end
-    # end
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_body).to match(expected_body)
+        end
+      end
+    end
 
     put('update person') do
       tags 'Person'
