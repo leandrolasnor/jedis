@@ -138,4 +138,211 @@ RSpec.describe PeopleController do
       end
     end
   end
+
+  path '/v1/people/{id}' do
+    # get('show person') do
+    #   tags 'People'
+    #   parameter name: :id, in: :path, type: :string, description: 'id'
+    #   response(404, 'not found') do
+    #     let(:id) { 0 }
+    #     let(:expected_body) { { error: I18n.t(:not_found) } }
+
+    #     run_test! do |response|
+    #       expect(response).to have_http_status(:not_found)
+    #       expect(parsed_body).to eq(expected_body)
+    #     end
+    #   end
+
+    #   response(200, 'successful') do
+    #     let(:id) { proponent.id }
+    #     let(:proponent) do
+    #       p = create(:proponent)
+    #       contact.proponent_id = p.id
+    #       address.proponent_id = p.id
+    #       contact.save
+    #       address.save
+    #       p
+    #     end
+    #     let(:contact) { build(:contact) }
+    #     let(:address) { build(:address) }
+
+    #     let(:expected_body) do
+    #       {
+    #         id: id,
+    #         name: proponent.name,
+    #         taxpayer_number: proponent.taxpayer_number,
+    #         birthdate: proponent.birthdate.to_date.to_s,
+    #         amount: proponent.amount.to_s,
+    #         discount_amount: proponent.discount_amount.to_s,
+    #         contacts: [
+    #           {
+    #             id: be_a(Integer),
+    #             number: contact.number
+    #           }
+    #         ],
+    #         addresses: [
+    #           {
+    #             id: be_a(Integer),
+    #             address: address.address,
+    #             number: address.number,
+    #             district: address.district,
+    #             city: address.city,
+    #             state: address.state,
+    #             zip: address.zip
+    #           }
+    #         ]
+    #       }
+    #     end
+
+    #     run_test! do |response|
+    #       expect(response).to have_http_status(:ok)
+    #       expect(parsed_body).to match(expected_body)
+    #     end
+    #   end
+    # end
+
+    put('update person') do
+      tags 'Person'
+      consumes "application/json"
+      parameter name: :id, in: :path, type: :string, description: 'id'
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          email: { type: :string, required: false },
+          status: { type: :number, required: false },
+          contacts_attributes: {
+            type: :array,
+            items: {
+              type: :object,
+              properties: {
+                number: { type: :string, required: true }
+              }
+            },
+            required: [:number]
+          },
+          addresses_attributes: {
+            type: :array,
+            items: {
+              type: :object,
+              properties: {
+                address: { type: :string, required: true },
+                number: { type: :string, required: true },
+                district: { type: :string, required: true },
+                city: { type: :string, required: true },
+                state: { type: :string, required: true },
+                addon: { type: :string, required: true },
+                ibge: { type: :string, required: true },
+                zip: { type: :string, required: true }
+              }
+            },
+            required: [:address, :number, :district, :city, :state, :zip, :addon, :ibge]
+          }
+        }
+      }
+
+      response(404, 'not found') do
+        let(:id) { 0 }
+        let(:expected_body) { { error: I18n.t(:not_found) } }
+        let(:params) { nil }
+
+        run_test! do |response|
+          expect(response).to have_http_status(:not_found)
+          expect(parsed_body).to eq(expected_body)
+        end
+      end
+
+      response(422, 'invalid params') do
+        let(:person) { create(:person) }
+        let(:id) { person.id }
+        let(:email) { '2010-02-28' }
+        let(:status) { 'email@provider.com' }
+
+        let(:params) do
+          {
+            email: email,
+            status: status,
+            contacts_attributes: [{ number: nil }],
+            addresses_attributes: [{ address: '' }]
+          }
+        end
+
+        let(:expected_body) do
+          {
+            addresses_attributes: {
+              '0': {
+                address: ["must be filled"]
+              }
+            },
+            contacts_attributes: {
+              '0': {
+                number: ["must be filled"]
+              }
+            },
+            email: ["Invalid Format"],
+            status: ["must be one of: disabled, enabled"]
+          }
+        end
+
+        run_test! do |response|
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(parsed_body).to eq(expected_body)
+        end
+      end
+
+      response(200, 'successful') do
+        let(:person) { create(:person) }
+        let(:id) { person.id }
+        let(:email) { 'test@test.com' }
+        let(:birthdate) { '1993-11-16' }
+        let(:status) { 0 }
+        let(:contact) { build(:contact).attributes }
+        let(:address) { build(:address).attributes }
+
+        let(:params) do
+          {
+            email: email,
+            status: status,
+            contacts_attributes: [contact],
+            addresses_attributes: [address]
+          }
+        end
+
+        let(:expected_body) do
+          {
+            id: be_a(Integer),
+            name: person.name,
+            taxpayer_number: person.taxpayer_number,
+            cns: person.cns,
+            birthdate: birthdate,
+            email: email,
+            status: UpdatePerson::Models::Person.statuses.keys[status],
+            contacts: [
+              {
+                id: be_a(Integer),
+                number: contact['number']
+              }
+            ],
+            addresses: [
+              {
+                id: be_a(Integer),
+                address: address['address'],
+                city: address['city'],
+                district: address['district'],
+                number: address['number'],
+                state: address['state'],
+                zip: address['zip'],
+                addon: address['addon'],
+                ibge: address['ibge']
+              }
+            ]
+          }
+        end
+
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_body).to match(expected_body)
+        end
+      end
+    end
+  end
 end
