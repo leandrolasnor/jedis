@@ -347,4 +347,56 @@ RSpec.describe PeopleController do
       end
     end
   end
+
+  path '/v1/people/search' do
+    get('search people') do
+      tags 'People'
+      parameter name: :query, in: :header, type: :string, description: 'query string'
+      parameter name: :page, in: :header, type: :number, description: 'limit pagination'
+      parameter name: :per_page, in: :header, type: :number, description: 'count of record per page'
+      response(200, 'successful') do
+        let(:query) { 'test' }
+        let(:page) { 2 }
+        let(:per_page) { 3 }
+        let(:offset) { (page - 1) * per_page }
+
+        context 'on success' do
+          before do |example|
+            allow(SearchPeople::Models::Person).
+              to receive(:ms_raw_search).
+              with('test', limit: 3, offset: offset).
+              and_return({ 'hits' => [] })
+            submit_request(example.metadata)
+          end
+
+          it do |_example|
+            expect(response).to have_http_status(:ok)
+            expect(SearchPeople::Models::Person).
+              to have_received(:ms_raw_search).
+              with('test', limit: 3, offset: offset)
+          end
+        end
+      end
+
+      response(422, 'failure') do
+        let(:query) { 'test' }
+        let(:page) { nil }
+        let(:per_page) { 3 }
+        let(:expected_body) { { page: ["must be filled"] } }
+
+        context 'on failure' do
+          before do |example|
+            allow(SearchPeople::Models::Person).to receive(:ms_raw_search)
+            submit_request(example.metadata)
+          end
+
+          it do |_example|
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(parsed_body).to match(expected_body)
+            expect(SearchPeople::Models::Person).not_to have_received(:ms_raw_search)
+          end
+        end
+      end
+    end
+  end
 end
