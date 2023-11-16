@@ -17,8 +17,8 @@ class PeopleController < BaseController
   end
 
   def search
-    status, content, serializer = Http::ListProponents::Service.(search_params)
-    render json: content, status: status, each_serializer: serializer
+    status, content = Http::SearchPeople::Service.(search_params)
+    render json: content, status: status
   end
 
   private
@@ -46,7 +46,11 @@ class PeopleController < BaseController
   end
 
   def search_params
-    params.permit(:query, :page, :per_page)
+    params.permit.to_h.merge(
+      query: request.headers[:query],
+      page: request.headers[:page],
+      per_page: request.headers[:per_page],
+    )
   end
 
   def update_params
