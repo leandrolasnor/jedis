@@ -13,6 +13,8 @@ services:
   sidekiq:
     image: leandrolasnor/ruby:jedis
     container_name: jedis.sidekiq
+    stdin_open: true
+    tty: true
     command: sh
     depends_on:
       - redis
@@ -82,8 +84,9 @@ prepare:
 	docker compose up api -d
 	docker compose exec api bundle exec rake db:migrate:reset
 	docker compose exec api bundle exec rake db:seed
-run:
+api:
 	docker compose exec api bundle exec rails s -b "0.0.0.0" -p 3000
+sidekiq:
 	docker compose exec sidekiq bundle exec sidekiq
 ```
 
