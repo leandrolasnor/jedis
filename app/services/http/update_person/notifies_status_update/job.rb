@@ -12,9 +12,7 @@ class Http::UpdatePerson::NotifiesStatusUpdate::Job
   def perform(person_id)
     res = monad.call(id: person_id)
 
-    return res if res.success?
-
-    Rails.logger.error(res.exception)
+    Rails.logger.error(res.exception) if res.failure?
     res
   end
 end
