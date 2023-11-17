@@ -36,3 +36,8 @@ en:
       age_must_be_between_18_80: "Age must be between 18 and 80 years old"
       cns_invalid: "CNS Code is not valid"
       invalid_format: "Invalid Format"
+  mailer:
+    person:
+      welcome: "Welcome to my app"
+      subject: "Your data was saves!"
+      body: "Your data:\n%{data}"

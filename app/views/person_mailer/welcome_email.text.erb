@@ -1,0 +1,3 @@
+<%= t('mailer.person.welcome') %>, <%= @person.name %>
+===========================================================
+<%=t('mailer.person.body', deep_interpolation: true, data: JSON.pretty_generate(@person.attributes))%>
