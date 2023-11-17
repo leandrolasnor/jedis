@@ -37,6 +37,8 @@ gem 'foreman'
 
 gem 'meilisearch-rails'
 
+gem 'twilio-ruby', '~> 6.8.1'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
