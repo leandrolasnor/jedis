@@ -131,9 +131,19 @@ RSpec.describe PeopleController do
           }
         end
 
-        run_test! do |response|
-          expect(response).to have_http_status(:created)
-          expect(parsed_body).to match(expected_body)
+        context 'on success' do
+          before do |example|
+            allow(Http::CreatePerson::NotifiesPersonCreated::Job).to receive(:perform_async).with(instance_of(Integer))
+            submit_request(example.metadata)
+          end
+
+          it do
+            expect(response).to have_http_status(:created)
+            expect(parsed_body).to match(expected_body)
+            expect(Http::CreatePerson::NotifiesPersonCreated::Job).
+              to have_received(:perform_async).
+              with(instance_of(Integer))
+          end
         end
       end
     end
