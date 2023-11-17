@@ -2,7 +2,7 @@
 
 Este documento descreve o passo a passo para rodar a aplicação referente ao desafio da vaga de Dev Ruby da Jedis
 
-[Enunciado do problema](https://github.com/OM30/desafio-OM30/blob/master/DesafioBackendRuby.md)
+[Enunciado do problema](https://github.com/leandrolasnor/jedis/blob/master/DESCRIPTION.md)
 
 ## Considerações sobre o ambiente
 
