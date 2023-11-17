@@ -9,14 +9,10 @@ class UpdatePerson::Steps::Update
   register_event 'person.status.updated'
 
   def call(record:, **params)
-    ApplicationRecord.transaction do
-      record.with_lock do
-        record.update!(params)
-      end
+    record.update!(params)
 
-      publish('person.status.updated', status: record.status) if record.previous_changes.key?(:status)
-      publish('person.updated', record: record)
-      record
-    end
+    publish('person.status.updated', record: record) if record.previous_changes.key?(:status)
+    publish('person.updated', record: record)
+    record
   end
 end
