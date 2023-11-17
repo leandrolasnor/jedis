@@ -294,16 +294,13 @@ RSpec.describe PeopleController do
       response(200, 'successful') do
         let(:person) { create(:person) }
         let(:id) { person.id }
-        let(:email) { 'test@test.com' }
-        let(:birthdate) { '1993-11-16' }
-        let(:status) { 0 }
         let(:contact) { build(:contact).attributes }
         let(:address) { build(:address).attributes }
 
         let(:params) do
           {
-            email: email,
-            status: status,
+            email: 'test@test.com',
+            status: 0,
             contacts_attributes: [contact],
             addresses_attributes: [address]
           }
@@ -315,9 +312,9 @@ RSpec.describe PeopleController do
             name: person.name,
             taxpayer_number: person.taxpayer_number,
             cns: person.cns,
-            birthdate: birthdate,
-            email: email,
-            status: UpdatePerson::Models::Person.statuses.keys[status],
+            birthdate: person.birthdate.to_date.to_s,
+            email: 'test@test.com',
+            status: UpdatePerson::Models::Person.statuses.keys[0],
             contacts: [
               {
                 id: be_a(Integer),
@@ -340,9 +337,17 @@ RSpec.describe PeopleController do
           }
         end
 
-        run_test! do |response|
-          expect(response).to have_http_status(:ok)
-          expect(parsed_body).to match(expected_body)
+        context 'on success' do
+          before do |example|
+            allow(Http::UpdatePerson::NotifiesStatusUpdate::Job).to receive(:perform_async).with(id)
+            submit_request(example.metadata)
+          end
+
+          it do
+            expect(response).to have_http_status(:ok)
+            expect(parsed_body).to match(expected_body)
+            expect(Http::UpdatePerson::NotifiesStatusUpdate::Job).to have_received(:perform_async).with(id)
+          end
         end
       end
     end
