@@ -90,7 +90,7 @@ sidekiq:
 	docker compose exec sidekiq bundle exec sidekiq
 ```
 
-* Faça o clone deste repositório ou copie os arquivos `makefile` e `docker-compose.yml` para um pasta na sua máquina
+* Faça o clone deste repositório ou copie os arquivos `makefile` e `docker-compose.yml` para uma pasta na sua máquina
 
 * Use o comando `make prepare` para baixar a imagem e subir os containers _api_, _db_, redis, meilisearch e _sidekiq_
 
