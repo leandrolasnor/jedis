@@ -12,7 +12,7 @@
 
 development:
   REDIS_URL: 'redis://redis:6379'
-  MEILISEARCH_ACCESS_KEY: 'vU8QQBiMCakitq-XSJDOIaf9gLmpvedxAW1k79Nx0Mg'
+  MEILISEARCH_ACCESS_KEY: 'key'
   MEILISEARCH_URL: 'http://meilisearch:7700/'
   TWILIO_SID: 'ACd25cd9540360aad0abfdebc9783df68e'
   TWILIO_TOKEN: 'df7af7bf1aa941e1ed55d59ca36e6ec5'
@@ -22,11 +22,11 @@ development:
   MAILER_PWD: 'xvhi sklv vato ftdb'
 test:
   REDIS_URL: 'redis://redis:6379'
-  MEILISEARCH_ACCESS_KEY: 'vU8QQBiMCakitq-XSJDOIaf9gLmpvedxAW1k79Nx0Mg'
+  MEILISEARCH_ACCESS_KEY: 'key'
   MEILISEARCH_URL: 'http://meilisearch:7700/'
   TWILIO_SID: 'ACd25cd9540360aad0abfdebc9783df68e'
   TWILIO_TOKEN: 'df7af7bf1aa941e1ed55d59ca36e6ec5'
   TWILIO_PHONE_NUMBER_TEST: '+15005550006'
-  MAILER_DOMAIN: 'ronsal.com'
+  MAILER_DOMAIN: 'gmail.com'
   MAILER_USERNAME: 'spt.barataomix@gmail.com'
   MAILER_PWD: 'xvhi sklv vato ftdb'

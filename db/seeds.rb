@@ -9,13 +9,10 @@
 #   end
 
 30.times do
-  p = FactoryBot.create(:person)
-  a = FactoryBot.build(:address)
-  c = FactoryBot.build(:contact)
-
-  a.person_id = p.id
-  c.person_id = p.id
-
-  a.save
-  c.save
+  FactoryBot.create(
+    :person,
+    :create_person,
+    addresses_attributes: [FactoryBot.build(:address).attributes],
+    contacts_attributes: [FactoryBot.build(:contact).attributes]
+  )
 end

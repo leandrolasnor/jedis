@@ -44,8 +44,8 @@ services:
   meilisearch:
       image: getmeili/meilisearch:latest
       container_name: jedis.meilisearch
+      environment:
+        MEILI_MASTER_KEY: 'key'
+        MEILI_NO_ANALYTICS: true
       ports:
         - "7700:7700"
-      environment:
-        MEILI_MASTER_KEY: key
-        MEILI_NO_ANALYTICS: true
