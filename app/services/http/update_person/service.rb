@@ -7,8 +7,14 @@ class Http::UpdatePerson::Service < Http::Service
          reader: :private
 
   option :transaction, type: Interface(:call), default: -> { UpdatePerson::Transaction.new }, reader: :private
+  option :job, type: Interface(:perform_async), default: -> { Http::UpdatePerson::NotifiesStatusUpdate::Job }
+  option :enqueuer, type: Instance(Proc), default: -> { proc { job.perform_async(_1) } }, reader: :private
 
   def call
+    transaction.operations[:update].subscribe('person.status.updated') do
+      enqueuer.(_1[:record].id)
+    end
+
     transaction.call(params) do
       _1.failure :validate do |f|
         [:unprocessable_entity, f.errors.to_h]
