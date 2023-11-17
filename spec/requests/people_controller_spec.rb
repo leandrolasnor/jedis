@@ -366,9 +366,9 @@ RSpec.describe PeopleController do
   path '/v1/people/search' do
     get('search people') do
       tags 'People'
-      parameter name: :query, in: :header, type: :string, description: 'query string'
-      parameter name: :page, in: :header, type: :number, description: 'current page'
-      parameter name: :per_page, in: :header, type: :number, description: 'count of record per page'
+      parameter name: :query, in: :query, type: :string, description: 'query string'
+      parameter name: :page, in: :query, type: :number, description: 'current page'
+      parameter name: :per_page, in: :query, type: :number, description: 'count of record per page'
       response(200, 'successful') do
         let(:query) { 'test' }
         let(:page) { 2 }
@@ -405,7 +405,7 @@ RSpec.describe PeopleController do
             submit_request(example.metadata)
           end
 
-          it do |_example|
+          it do
             expect(response).to have_http_status(:unprocessable_entity)
             expect(parsed_body).to match(expected_body)
             expect(SearchPeople::Models::Person).not_to have_received(:ms_raw_search)

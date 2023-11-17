@@ -181,17 +181,17 @@ paths:
       - People
       parameters:
       - name: query
-        in: header
+        in: query
         description: query string
         schema:
           type: string
       - name: page
-        in: header
+        in: query
         description: current page
         schema:
           type: number
       - name: per_page
-        in: header
+        in: query
         description: count of record per page
         schema:
           type: number
