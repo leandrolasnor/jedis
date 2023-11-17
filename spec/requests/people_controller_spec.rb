@@ -5,13 +5,13 @@ require 'swagger_helper'
 RSpec.describe PeopleController do
   path '/v1/people' do
     post('create person') do
-      tags 'People'
+      tags 'Person'
       consumes "application/json"
       parameter name: :params, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string, required: true },
-          taxpayer_number: { type: :integer },
+          taxpayer_number: { type: :string },
           cns: { type: :string },
           birthdate: { type: :string, required: true },
           email: { type: :string, required: true },
@@ -151,7 +151,7 @@ RSpec.describe PeopleController do
 
   path '/v1/people/{id}' do
     get('show person') do
-      tags 'People'
+      tags 'Person'
       parameter name: :id, in: :path, type: :string, description: 'id'
       response(404, 'not found') do
         let(:id) { 0 }
@@ -367,7 +367,7 @@ RSpec.describe PeopleController do
     get('search people') do
       tags 'People'
       parameter name: :query, in: :header, type: :string, description: 'query string'
-      parameter name: :page, in: :header, type: :number, description: 'limit pagination'
+      parameter name: :page, in: :header, type: :number, description: 'current page'
       parameter name: :per_page, in: :header, type: :number, description: 'count of record per page'
       response(200, 'successful') do
         let(:query) { 'test' }
@@ -384,7 +384,7 @@ RSpec.describe PeopleController do
             submit_request(example.metadata)
           end
 
-          it do |_example|
+          it do
             expect(response).to have_http_status(:ok)
             expect(SearchPeople::Models::Person).
               to have_received(:ms_raw_search).

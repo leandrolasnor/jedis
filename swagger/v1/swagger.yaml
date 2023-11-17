@@ -8,7 +8,7 @@ paths:
     post:
       summary: create person
       tags:
-      - People
+      - Person
       parameters: []
       responses:
         '422':
@@ -25,7 +25,7 @@ paths:
                   type: string
                   required: true
                 taxpayer_number:
-                  type: integer
+                  type: string
                 cns:
                   type: string
                 birthdate:
@@ -83,7 +83,7 @@ paths:
     get:
       summary: show person
       tags:
-      - People
+      - Person
       parameters:
       - name: id
         in: path
@@ -187,7 +187,7 @@ paths:
           type: string
       - name: page
         in: header
-        description: limit pagination
+        description: current page
         schema:
           type: number
       - name: per_page
@@ -201,7 +201,7 @@ paths:
         '422':
           description: failure
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: 127.0.0.1:3000
