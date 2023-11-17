@@ -11,7 +11,6 @@ class Http::SearchPeople::Service < Http::Service
     return [:ok, res.value!] if res.success?
 
     Rails.logger.error(res.exception)
-    debugger
     [:internal_server_error, res.exception.message]
   end
 end
