@@ -4,6 +4,8 @@ services:
   sidekiq:
     image: leandrolasnor/ruby:jedis
     container_name: jedis.sidekiq
+    stdin_open: true
+    tty: true
     command: sh
     depends_on:
       - redis
