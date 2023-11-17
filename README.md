@@ -51,13 +51,13 @@ services:
       - "6379:6379"
 
   meilisearch:
-      image: getmeili/meilisearch:latest
-      container_name: jedis.meilisearch
-      ports:
-        - "7700:7700"
-      environment:
-        MEILI_MASTER_KEY: key
-        MEILI_NO_ANALYTICS: true
+    image: getmeili/meilisearch:latest
+    container_name: jedis.meilisearch
+    environment:
+      MEILI_MASTER_KEY: 'key'
+      MEILI_NO_ANALYTICS: true
+    ports:
+      - "7700:7700"
 ```
 
 * Uma image docker foi publicada no [Docker Hub](https://hub.docker.com/layers/leandrolasnor/ruby/jedis/images/sha256-03046a84e3dadf16f408ea84d1543530091cc75b0a574b8a220bb1c36307a0bc?context=repo)
