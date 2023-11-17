@@ -4,6 +4,6 @@ class Http::SearchPeople::Contract < ApplicationContract
   params do
     required(:page).filled(:integer)
     optional(:per_page).filled(:integer)
-    optional(:query).maybe(:string)
+    optional(:query).filled(:string)
   end
 end

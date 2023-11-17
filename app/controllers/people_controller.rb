@@ -46,11 +46,7 @@ class PeopleController < BaseController
   end
 
   def search_params
-    params.permit.to_h.merge(
-      query: request.headers['HTTP_QUERY'],
-      page: request.headers['HTTP_PAGE'],
-      per_page: request.headers['HTTP_PER_PAGE']
-    )
+    params.permit(:query, :page, :per_page)
   end
 
   def update_params
