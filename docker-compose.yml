@@ -4,7 +4,7 @@ services:
   sidekiq:
     image: leandrolasnor/ruby:jedis
     container_name: jedis.sidekiq
-    command: sh -c "bundle exec sidekiq"
+    command: sh
     depends_on:
       - redis
 
@@ -38,18 +38,6 @@ services:
       ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "6379:6379"
-
-  react:
-    image: leandrolasnor/ruby:jedis
-    container_name: jedis.react
-    stdin_open: true
-    tty: true
-    command: sh
-    ports:
-      - "3001:3001"
-    depends_on:
-      - api
-      - sidekiq
 
   meilisearch:
       image: getmeili/meilisearch:latest
