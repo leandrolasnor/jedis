@@ -11,7 +11,18 @@ class Http::CreatePerson::Service < Http::Service
          default: -> { CreatePerson::Transaction.new },
          reader: :private
 
+  option :job,
+         type: Interface(:perform_async),
+         default: -> { Http::CreatePerson::NotifiesPersonCreated::Job },
+         reader: :private
+
+  option :enqueuer, type: Instance(Proc), default: -> { proc { job.perform_async(_1) } }, reader: :private
+
   def call
+    transaction.operations[:create].subscribe('person.created') do
+      enqueuer.(_1[:record].id)
+    end
+
     transaction.call(params) do
       _1.failure :validate do |f|
         [:unprocessable_entity, f.errors.to_h]
