@@ -33,7 +33,7 @@ services:
     environment:
       ALLOW_EMPTY_PASSWORD: yes
     ports:
-    - "6379:6379"
+    - 6379:6379
 
   meilisearch:
     image: getmeili/meilisearch:latest
