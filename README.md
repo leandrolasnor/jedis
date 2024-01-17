@@ -1,102 +1,27 @@
 # Desafio para Backend - Jedis
 
-Este documento descreve o passo a passo para rodar a aplicação referente ao desafio da vaga de Dev Ruby da Jedis
-
 [Enunciado do problema](https://github.com/leandrolasnor/jedis/blob/master/DESCRIPTION.md)
 
-## Considerações sobre o ambiente
-
-```
-# docker-compose.yml
-version: '2.22'
-services:
-  sidekiq:
-    image: leandrolasnor/ruby:jedis
-    container_name: jedis.sidekiq
-    stdin_open: true
-    tty: true
-    command: sh
-    depends_on:
-      - redis
-
-  api:
-    image: leandrolasnor/ruby:jedis
-    container_name: jedis.api
-    stdin_open: true
-    tty: true
-    command: sh
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-      - sidekiq
-      - meilisearch
-
-  db:
-    image: postgres:16.0
-    container_name: jedis.postgresql
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: user
-      POSTGRES_DB: jedis
-    ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:alpine
-    container_name: jedis.redis
-    environment:
-      ALLOW_EMPTY_PASSWORD: 'yes'
-    ports:
-      - "6379:6379"
-
-  meilisearch:
-    image: getmeili/meilisearch:latest
-    container_name: jedis.meilisearch
-    environment:
-      MEILI_MASTER_KEY: 'key'
-      MEILI_NO_ANALYTICS: true
-    ports:
-      - "7700:7700"
-```
-
-* Uma image docker foi publicada no [Docker Hub](https://hub.docker.com/layers/leandrolasnor/ruby/jedis/images/sha256-03046a84e3dadf16f408ea84d1543530091cc75b0a574b8a220bb1c36307a0bc?context=repo)
-
 #### Conceitos e ferramentas utilizadas na resolução do problema
-* Princípio de Inversão de Dependência
-* Princípio da Segregação da Interface
-* Princípio da responsabilidade única
-* Princípio da substituição de Liskov
-* Princípio Aberto-Fechado
-* Background Processing
-* Domain Driven Design
-* Código Limpo
-* Rubocop
-* Bullet
-* Dry-rb
-* RSpec
+`Docker`
 
-## Considerações sobre a aplicação
+`Ruby on Rails` `Dry-rb` `Sidekiq`
 
-```
-# makefile
-prepare:
-	docker compose up api -d
-	docker compose exec api bundle exec rake db:migrate:reset
-	docker compose exec api bundle exec rake db:seed
-run:
-	docker compose exec api bundle exec foreman start
-```
+`MeiliSearch` `RSpec` `RSwag` `Redis`
 
-* Faça o clone deste repositório ou copie os arquivos `makefile` e `docker-compose.yml` para uma pasta na sua máquina
+`SOLID` `DDD` `Clear Code` `Clean Arch`
 
-* Use o comando `make prepare` para baixar a imagem e subir os containers _api_, _db_, redis, meilisearch e _sidekiq_
+`PostgreSQL`
 
-__Nessa etapa as `migrations` foram executadas e o banco de dados se encontra populado com alguns dados__
+# .devcontainer :whale:
 
-## Passo a Passo de como executar a solução
+1. Rode o comando no Visual Code `> Dev Containers: Clone Repository in Container Volume...` e dê `Enter`.
+2. Informe a url: `https://github.com/leandrolasnor/jedis` e dê `Enter`
+4. :hourglass_flowing_sand: Aguarde até [+] Building **352.7s** (31/31) FINISHED
 
-* Use o comando `make run` para rodar a aplicação
+## Com o processo de build concluido, faça:
+
+* Rode o comando no terminal: `foreman start`
 
 ## Swagger
 

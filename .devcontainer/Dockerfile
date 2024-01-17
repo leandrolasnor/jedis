@@ -1,25 +1,18 @@
 FROM ruby:3.2.2-alpine3.18
 RUN apk update && apk add \
-    build-base tzdata git sqlite sqlite-dev zsh wget \
+    build-base tzdata git sqlite sqlite-dev zsh bash wget \
     nano curl font-meslo-nerd shadow zsh-vcs redis dos2unix \
     postgresql-dev postgresql-client yarn
 
-ENV APP_HOME /app
+ENV APP_HOME /workspaces/jedis
 WORKDIR $APP_HOME
-
-RUN git init
-RUN git remote add origin https://github.com/leandrolasnor/jedis
-RUN git pull origin master
-RUN git checkout master -f
-RUN git branch --set-upstream-to origin/master
-
 RUN gem install bundler --version '2.4.19'
+COPY . $APP_HOME
+
 RUN bundle
 
-COPY entrypoint.sh /usr/bin/
-RUN dos2unix /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+RUN dos2unix ./.devcontainer/*.sh
+RUN chmod +x ./.devcontainer/*.sh
 
 RUN rm -rf /root/.oh-my-zsh
 RUN sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"

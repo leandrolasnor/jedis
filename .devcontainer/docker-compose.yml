@@ -1,5 +1,5 @@
 # docker-compose.yml
-version: '2.22'
+version: '3.8'
 services:
   sidekiq:
     image: leandrolasnor/ruby:jedis
@@ -8,7 +8,7 @@ services:
     tty: true
     command: sh
     depends_on:
-      - redis
+    - redis
 
   api:
     image: leandrolasnor/ruby:jedis
@@ -17,11 +17,11 @@ services:
     tty: true
     command: sh
     ports:
-      - "3000:3000"
+    - 3000:3000
     depends_on:
-      - db
-      - sidekiq
-      - meilisearch
+    - db
+    - sidekiq
+    - meilisearch
 
   db:
     image: postgres:16.0
@@ -31,21 +31,21 @@ services:
       POSTGRES_PASSWORD: user
       POSTGRES_DB: jedis
     ports:
-      - "5432:5432"
+    - 5432:5432
 
   redis:
     image: redis:alpine
     container_name: jedis.redis
     environment:
-      ALLOW_EMPTY_PASSWORD: 'yes'
+      ALLOW_EMPTY_PASSWORD: yes
     ports:
-      - "6379:6379"
+    - "6379:6379"
 
   meilisearch:
-      image: getmeili/meilisearch:latest
-      container_name: jedis.meilisearch
-      environment:
-        MEILI_MASTER_KEY: 'key'
-        MEILI_NO_ANALYTICS: true
-      ports:
-        - "7700:7700"
+    image: getmeili/meilisearch:latest
+    container_name: jedis.meilisearch
+    environment:
+      MEILI_MASTER_KEY: key
+      MEILI_NO_ANALYTICS: true
+    ports:
+    - 7700:7700
