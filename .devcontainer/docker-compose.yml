@@ -14,8 +14,8 @@ services:
     - 3000:3000
     depends_on:
     - db
-    - sidekiq
     - meilisearch
+    - redis
 
   db:
     image: postgres:16.0
