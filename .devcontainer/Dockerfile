@@ -1,7 +1,7 @@
 FROM ruby:3.2.2-alpine3.18
 RUN apk update && apk add \
     build-base tzdata git sqlite sqlite-dev zsh bash wget \
-    nano curl font-meslo-nerd shadow zsh-vcs redis dos2unix \
+    nano curl font-meslo-nerd shadow zsh-vcs redis \
     postgresql-dev postgresql-client yarn
 
 ENV APP_HOME /workspaces/jedis
@@ -11,8 +11,8 @@ COPY . $APP_HOME
 
 RUN bundle
 
-RUN dos2unix ./.devcontainer/*.sh
-RUN chmod +x ./.devcontainer/*.sh
+RUN chmod +x ./.devcontainer/start.sh
+RUN chmod +x ./.devcontainer/boot.sh
 
 RUN rm -rf /root/.oh-my-zsh
 RUN sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
