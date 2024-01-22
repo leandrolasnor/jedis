@@ -389,6 +389,7 @@ RSpec.describe PeopleController do
             expect(SearchPeople::Models::Person).
               to have_received(:ms_raw_search).
               with('test', limit: 3, offset: offset)
+            expect(parsed_body).to eq([])
           end
         end
       end
